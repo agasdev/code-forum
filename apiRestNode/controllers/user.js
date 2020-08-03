@@ -114,7 +114,14 @@ const login = (req, res) => {
 
 }
 
+const update = (req, res) => {
+    return res.status(200).send({
+        status: "Update controller"
+    });
+}
+
 module.exports = {
     save,
-    login
+    login,
+    update
 };
