@@ -10,14 +10,22 @@ const save = (req, res) => {
     const params = req.body;
 
     // Validate data
-    const validate_name = !validator.isEmpty(params.name);
-    const validate_surname = !validator.isEmpty(params.surname);
-    const validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
-    const validate_password = !validator.isEmpty(params.password);
+    try {
+        const validate_name = !validator.isEmpty(params.name);
+        const validate_surname = !validator.isEmpty(params.surname);
+        const validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
+        const validate_password = !validator.isEmpty(params.password);
 
-    if (!(validate_name && validate_surname && validate_email && validate_password)) {
-        return res.status(400).send({
-            message: "Invalid data"
+        if (!(validate_name && validate_surname && validate_email && validate_password)) {
+            return res.status(400).send({
+                status: "error",
+                message: "Invalid data"
+            });
+        }
+    } catch (err) {
+        return res.status(404).send({
+            status: "error",
+            message: "Data error"
         });
     }
 
@@ -33,10 +41,12 @@ const save = (req, res) => {
     User.findOne({email: user.email}, (err, issetUser) => {
         if (err) {
             return res.status(500).send({
+                status: "error",
                 message: "Error from DB"
             });
         } else if (issetUser) {
             return res.status(400).send({
+                status: "error",
                 message: "User already exist"
             });
         } else {
@@ -49,6 +59,7 @@ const save = (req, res) => {
             user.save((err, userStored) => {
                 if (err || !userStored) {
                     return res.status(500).send({
+                        status: "error",
                         message: "Error saving user"
                     });
                 }
@@ -66,12 +77,20 @@ const login = (req, res) => {
     const params = req.body;
 
     // Validate data
-    const validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
-    const validate_password = !validator.isEmpty(params.password);
+    try {
+        const validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
+        const validate_password = !validator.isEmpty(params.password);
 
-    if (!validate_email || !validate_password) {
-        return res.status(400).send({
-            message: "Invalid data"
+        if (!validate_email || !validate_password) {
+            return res.status(400).send({
+                status: "error",
+                message: "Invalid data"
+            });
+        }
+    } catch (err) {
+        return res.status(404).send({
+            status: "error",
+            message: "Data error"
         });
     }
 
@@ -79,11 +98,13 @@ const login = (req, res) => {
     User.findOne({email: params.email.toLowerCase()}, (err, user) => {
         if (err) {
             return res.status(500).send({
+                status: "error",
                 message: "Error retrieving user from DB"
             });
         }
         if (!user) {
             return res.status(404).send({
+                status: "error",
                 message: "User not found"
             });
         }
@@ -92,6 +113,7 @@ const login = (req, res) => {
         bcrypt.compare(params.password, user.password, (err, check) => {
             if (err || !check) {
                 return res.status(400).send({
+                    status: "error",
                     message: "Incorrect password"
                 });
             }
@@ -99,6 +121,7 @@ const login = (req, res) => {
             // Create token
             if (params.getToken) {
                 return res.status(200).send({
+                    status: "success",
                     token: jwt.createToken(user)
                 });
             }
@@ -115,8 +138,55 @@ const login = (req, res) => {
 }
 
 const update = (req, res) => {
-    return res.status(200).send({
-        status: "Update controller"
+    const params = req.body;
+
+    try {
+        const validate_name = !validator.isEmpty(params.name);
+        const validate_surname = !validator.isEmpty(params.surname);
+        const validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
+
+        if (!(validate_name && validate_surname && validate_email)) {
+            return res.status(400).send({
+                status: "error",
+                message: "Invalid data"
+            });
+        }
+    } catch (err) {
+        return res.status(404).send({
+            status: "error",
+            message: "Data error"
+        });
+    }
+
+    delete params.password;
+
+    const userId = req.user.sub;
+
+    User.findOne({email: params.email.toLowerCase()}, (err, user) => {
+        if (err) {
+            return res.status(500).send({
+                status: "error",
+                message: "Error retrieving user from DB"
+            });
+        }else if (user && req.user.email !== params.email) {
+            return res.status(404).send({
+                status: "error",
+                message: "Email is already in use"
+            });
+        } else {
+            User.findOneAndUpdate({_id: userId}, params, {new: true}, (err, userUpdated) => {
+                if (err || !userUpdated) {
+                    return res.status(400).send({
+                        status: "error",
+                        message: "Update error"
+                    });
+                }
+                return res.status(200).send({
+                    status: "success",
+                    user: userUpdated
+                });
+            });
+        }
     });
 }
 
