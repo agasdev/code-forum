@@ -4,6 +4,8 @@ const validator = require('validator');
 const bcrypt = require('bcrypt-nodejs');
 const User = require('../models/user');
 const jwt = require('../services/jwt');
+const fs = require('fs');
+const path = require('path');
 
 const save = (req, res) => {
     // Get request parameters
@@ -168,7 +170,7 @@ const update = (req, res) => {
                 status: "error",
                 message: "Error retrieving user from DB"
             });
-        }else if (user && req.user.email !== params.email) {
+        } else if (user && req.user.email !== params.email) {
             return res.status(404).send({
                 status: "error",
                 message: "Email is already in use"
@@ -190,8 +192,54 @@ const update = (req, res) => {
     });
 }
 
+const uploadAvatar = (req, res) => {
+    // Get file
+    if (!req.files.file0) {
+        return res.status(400).send({
+            status: "error",
+            message: "Avatar not uploaded"
+        });
+    }
+
+    // Get info file
+    const file_path = req.files.file0.path;
+    const file_split = file_path.split('/');
+    const file_name = file_split.pop();
+    const ext_split = file_name.split('.');
+    const file_ext = ext_split.pop();
+
+    // Check extension
+    if (file_ext !== 'png' && file_ext !== 'jpg' && file_ext !== 'jpeg' && file_ext !== 'gif') {
+        fs.unlink(file_path, () => {
+            return res.status(403).send({
+                status: "error",
+                message: "File not allowed"
+            });
+        });
+
+    } else {
+        // Check user id
+        const userId = req.user.sub;
+
+        // Update user
+        User.findOneAndUpdate(userId, {image: file_name}, {new: true}, (err, userUpdate) => {
+            if (err || !userUpdate) {
+                return res.status(500).send({
+                    status: "error",
+                    message: "Error updating user"
+                });
+            }
+            return res.status(200).send({
+                status: "success",
+                user: userUpdate
+            });
+        });
+    }
+}
+
 module.exports = {
     save,
     login,
-    update
+    update,
+    uploadAvatar
 };
