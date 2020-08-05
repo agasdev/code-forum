@@ -237,9 +237,24 @@ const uploadAvatar = (req, res) => {
     }
 }
 
+const avatar = (req, res) => {
+    const file_name = req.params.fileName;
+    const path_file = `./uploads/users/${file_name}`;
+
+    if (!fs.existsSync(path_file)) {
+        return res.status(404).send({
+            status: "error",
+            message: "Image not found"
+        });
+    }
+
+    return res.sendFile(path.resolve(path_file));
+}
+
 module.exports = {
     save,
     login,
     update,
-    uploadAvatar
+    uploadAvatar,
+    avatar
 };
