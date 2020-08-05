@@ -251,10 +251,45 @@ const avatar = (req, res) => {
     return res.sendFile(path.resolve(path_file));
 }
 
+const getUsers = (req, res) => {
+    User.find().exec((err, users) => {
+        if (err || !users) {
+            return res.status(404).send({
+                status: "error",
+                message: "Not users found"
+            })
+        }
+
+        return res.status(200).send({
+            status: "success",
+            users
+        });
+    });
+}
+
+const getUser = (req, res) => {
+    const userId = req.params.id;
+    User.findById(userId).exec((err, user) => {
+        if (err || !user) {
+            return res.status(404).send({
+                status: "error",
+                message: "Not user found"
+            })
+        }
+
+        return res.status(200).send({
+            status: "success",
+            user
+        });
+    });
+}
+
 module.exports = {
     save,
     login,
     update,
     uploadAvatar,
-    avatar
+    avatar,
+    getUsers,
+    getUser
 };
