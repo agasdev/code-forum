@@ -6,24 +6,13 @@ const Topic = require('../models/topic');
 const save = (req, res) => {
     // Get parameters
     const params = req.body;
+    const validate = validateData(params);
 
-    // Validate data
-    try {
-        const validate_title = !validator.isEmpty(params.title);
-        const validate_content = !validator.isEmpty(params.content);
-        const validate_lang = !validator.isEmpty(params.lang);
-
-        if (!(validate_title && validate_content && validate_lang)) {
-            return res.status(400).send({
-                status: "error",
-                message: "Invalid data"
-            });
-        }
-    } catch (err) {
-        return res.status(500).send({
+    if (!validate.isValid) {
+        return res.status(validate.code).send({
             status: "error",
-            message: "Data error"
-        })
+            message: validate.message
+        });
     }
 
     // Create topic object
@@ -138,9 +127,80 @@ const getTopic = (req, res) => {
     });
 }
 
+const update = (req, res) => {
+    const topicId = req.params.id;
+    const params = req.body;
+    const validate = validateData(params);
+
+    if (!validate.isValid) {
+        return res.status(validate.code).send({
+            status: "error",
+            message: validate.message
+        });
+    }
+
+    const update = {
+        title: params.title,
+        content: params.content,
+        code: params.code,
+        lang: params.lang
+    }
+
+    Topic.findOneAndUpdate({_id: topicId, user: req.user.sub}, update, {new:true}).populate('user').exec((err, topicUpdated) => {
+        if (err || !topicUpdated) {
+            return res.status(500).send({
+                status: "error",
+                message: "Error updating topic"
+            });
+        }
+
+        return res.status(200).send({
+            status: "success",
+            topic: topicUpdated
+        });
+    });
+}
+
+const deleteTopic = (req, res) => {
+    const topicId = req.params.id;
+
+    Topic.findOneAndDelete({_id: topicId, user: req.user.sub}).populate('user').exec((err, topicRemove) => {
+        if (err || !topicRemove) {
+            return res.status(500).send({
+                status: "error",
+                message: "Error removing topic"
+            });
+        }
+
+        return res.status(200).send({
+            status: "success",
+            topic: topicRemove
+        });
+    });
+}
+
+const validateData = (params) => {
+    let validate = {isValid: true, code: 200};
+    try {
+        const validate_title = !validator.isEmpty(params.title);
+        const validate_content = !validator.isEmpty(params.content);
+        const validate_lang = !validator.isEmpty(params.lang);
+
+        if (!(validate_title && validate_content && validate_lang)) {
+            validate = {isValid: false, message: "Invalid data", code: 400};
+        }
+    } catch (err) {
+        validate = {isValid: false, message: "Data error", code: 500};
+    }
+
+    return validate;
+}
+
 module.exports = {
     save,
     getTopics,
     getTopicsByUser,
-    getTopic
+    getTopic,
+    update,
+    deleteTopic
 }
