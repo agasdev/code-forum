@@ -32,6 +32,7 @@ const save = (req, res) => {
     topic.content = params.content;
     topic.code = params.code;
     topic.lang = params.lang;
+    topic.user = req.user.sub;
 
     // Save topic
     topic.save((err, topicStore) => {
@@ -49,6 +50,48 @@ const save = (req, res) => {
     });
 }
 
+const getTopics = (req, res) => {
+    // Get actual page
+    let page = parseInt(req.params.page);
+    console.log(page);
+    if (!page || page === 0) {
+        page = 1;
+    }
+
+    // Paginate options
+    const options = {
+        sort: { date: -1 },
+        populate: 'user',
+        limit: 5,
+        page: page
+    }
+
+    // Find with pagination
+    Topic.paginate({}, options, (err, topics) => {
+        if (err) {
+            return res.status(500).send({
+                status: "error",
+                message: "Error retrieving topics from DB"
+            });
+        }
+
+        if (topics.docs.length === 0) {
+            return res.status(404).send({
+                status: "error",
+                message: "No topics found"
+            });
+        }
+
+        return res.status(200).send({
+            status: "success",
+            topics: topics.docs,
+            totalDocs: topics.totalDocs,
+            totalPages: topics.totalPages
+        });
+    });
+}
+
 module.exports = {
-    save
+    save,
+    getTopics
 }

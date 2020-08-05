@@ -10,5 +10,6 @@ const mAuth = require('../middlewares/auth');
 const mUpload = multipart({uploadDir: './uploads/users'});*/
 
 router.post('/topic', mAuth.auth, TopicController.save);
+router.get('/topics/:page?', TopicController.getTopics);
 
 module.exports = router;
