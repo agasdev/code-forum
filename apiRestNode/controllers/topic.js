@@ -91,7 +91,56 @@ const getTopics = (req, res) => {
     });
 }
 
+const getTopicsByUser = (req, res) => {
+    // Get user id
+    const userId = req.params.user;
+
+    // Find user topics
+    Topic.find({user: userId}).sort([['date', 'descending']]).exec((err, topics) => {
+       if (err) {
+           return res.status(500).send({
+               status: "error",
+               message: "Error retrieving topics from DB"
+           });
+       }
+
+       if (topics.length === 0) {
+           return res.status(404).send({
+               status: "error",
+               message: "No topics found"
+           });
+       }
+
+        return res.status(200).send({
+            status: "success",
+            topics
+        })
+    });
+}
+
+const getTopic = (req, res) => {
+    // Get topic id
+    const topicId = req.params.id;
+
+    // Find topic
+    Topic.findById(topicId).populate('user').exec((err, topic) => {
+        if (err || !topic) {
+            return res.status(404).send({
+                status: "error",
+                message: "No topic found"
+            });
+        }
+
+        return res.status(200).send({
+            status: "success",
+            topic
+        })
+    });
+}
+
 module.exports = {
     save,
-    getTopics
+    getTopics,
+    getTopicsByUser,
+    getTopic
 }

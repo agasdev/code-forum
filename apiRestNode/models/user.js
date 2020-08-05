@@ -12,4 +12,11 @@ const UserSchema = Schema({
     role: String
 });
 
+UserSchema.methods.toJSON = function() {
+    const obj = this.toObject();
+    delete obj.password;
+
+    return obj;
+}
+
 module.exports = mongoose.model('User', UserSchema);
