@@ -49,7 +49,7 @@ const getTopics = (req, res) => {
 
     // Paginate options
     const options = {
-        sort: { date: -1 },
+        sort: {date: -1},
         populate: 'user',
         limit: 5,
         page: page
@@ -86,19 +86,19 @@ const getTopicsByUser = (req, res) => {
 
     // Find user topics
     Topic.find({user: userId}).sort([['date', 'descending']]).exec((err, topics) => {
-       if (err) {
-           return res.status(500).send({
-               status: "error",
-               message: "Error retrieving topics from DB"
-           });
-       }
+        if (err) {
+            return res.status(500).send({
+                status: "error",
+                message: "Error retrieving topics from DB"
+            });
+        }
 
-       if (topics.length === 0) {
-           return res.status(404).send({
-               status: "error",
-               message: "No topics found"
-           });
-       }
+        if (topics.length === 0) {
+            return res.status(404).send({
+                status: "error",
+                message: "No topics found"
+            });
+        }
 
         return res.status(200).send({
             status: "success",
@@ -146,7 +146,10 @@ const update = (req, res) => {
         lang: params.lang
     }
 
-    Topic.findOneAndUpdate({_id: topicId, user: req.user.sub}, update, {new:true}).populate('user').exec((err, topicUpdated) => {
+    Topic.findOneAndUpdate({
+        _id: topicId,
+        user: req.user.sub
+    }, update, {new: true}).populate('user').exec((err, topicUpdated) => {
         if (err || !topicUpdated) {
             return res.status(500).send({
                 status: "error",
@@ -179,6 +182,38 @@ const deleteTopic = (req, res) => {
     });
 }
 
+const search = (req, res) => {
+    const search = req.params.search;
+
+    Topic.find({
+        "$or": [
+            {"title": {"$regex": search, "$options": "i"}},
+            {"content": {"$regex": search, "$options": "i"}},
+            {"code": {"$regex": search, "$options": "i"}},
+            {"lang": {"$regex": search, "$options": "i"}},
+        ]
+    }).sort([["date", "descending"]]).exec((err, topics) => {
+        if (err) {
+            return res.status(500).send({
+                status: "error",
+                message: "Error retrieving topics from DB"
+            });
+        }
+
+        if (topics.length === 0) {
+            return res.status(404).send({
+                status: "error",
+                message: "No topics found"
+            });
+        }
+
+        return res.status(200).send({
+            status: "success",
+            topics
+        });
+    });
+}
+
 const validateData = (params) => {
     let validate = {isValid: true, code: 200};
     try {
@@ -202,5 +237,6 @@ module.exports = {
     getTopicsByUser,
     getTopic,
     update,
-    deleteTopic
+    deleteTopic,
+    search
 }
