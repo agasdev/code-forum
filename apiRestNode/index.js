@@ -5,14 +5,17 @@ const app = require('./app');
 const port = process.env.PORT || 3000;
 
 mongoose.set('useFindAndModify', false);
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/forum', { useNewUrlParser: true })
-        .then(() => {
-            console.log('La conexión a la base de datos mongo se ha realizado correctamente');
 
-            // Crear servidor
-            app.listen(port, () => {
-                console.log("Server run in http://localhost:3000");
-            });
-        })
-        .catch(error => console.log(error));
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/forum', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+mongoose.connection.on('connected', () => {
+    app.set('port', port);
+    console.log('Mongoose is conected');
+
+    const server = app.listen(port, () => {
+        console.log("Server run in " + server.address().port);
+    });
+});
