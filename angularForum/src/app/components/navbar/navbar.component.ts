@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
+import {global} from "../../services/global";
 
 @Component({
   selector: 'app-navbar',
@@ -10,8 +11,11 @@ import { UserService } from "../../services/user.service";
 })
 export class NavbarComponent implements OnInit {
   @Input('identity') identity: User;
+  public url: string;
 
-  constructor(private _userServive: UserService, private _router: Router, private _activatedRoute: ActivatedRoute) { }
+  constructor(private _userServive: UserService, private _router: Router, private _activatedRoute: ActivatedRoute) {
+    this.url = global.URL;
+  }
 
   ngOnInit(): void {
   }
