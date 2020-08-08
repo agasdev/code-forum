@@ -4,13 +4,14 @@ import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { appRouting, appRoutingProviders } from "./app.routing";
 import { AngularFileUploaderModule } from "angular-file-uploader";
+import { UserPanelModule } from "./modules/user-panel/user-panel.module";
 
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './components/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 
 @NgModule({
@@ -28,7 +29,8 @@ import { UserEditComponent } from './components/user-edit/user-edit.component';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    AngularFileUploaderModule
+    AngularFileUploaderModule,
+    UserPanelModule
   ],
   providers: [
     appRoutingProviders

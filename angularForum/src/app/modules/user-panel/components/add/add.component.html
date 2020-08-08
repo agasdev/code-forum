@@ -1,0 +1,56 @@
+<div class="col-lg-12">
+  <h3>{{ pageTitle }}</h3><hr />
+
+  <div class="alert alert-danger col-md-5 mx-auto" *ngIf="status === 'error'">
+    Ha habido algún error al crear el tema
+  </div>
+
+  <form class="col-lg-8 mx-auto" #addTopic="ngForm" (ngSubmit)="onSubmit(addTopic)">
+
+    <div class="form-group">
+      <label for="title">Título</label>
+      <input class="form-control" id="title" name="title"
+             required type="text"
+             #title="ngModel" [(ngModel)]="topic.title"
+      />
+      <small class="invalid-feedback d-block" *ngIf="!title.valid && title.touched">
+        El título no es válido
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="content">Pregunta o contenido a resolver</label>
+      <textarea class="form-control" id="content" name="content"
+             required type="text" #content="ngModel" [(ngModel)]="topic.content"
+      ></textarea>
+      <small class="invalid-feedback d-block" *ngIf="!content.valid && content.touched">
+        El contenido no es válido
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="code">Código</label>
+      <textarea class="form-control" id="code" name="code" type="text"
+             #code="ngModel" [(ngModel)]="topic.code"
+      ></textarea>
+      <small class="invalid-feedback d-block" *ngIf="!code.valid && code.touched">
+        El código no es válido
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="lang">Lenguaje de programación de la pregunta o contenido</label>
+      <input class="form-control" id="lang" name="lang"
+             required type="text"
+             #lang="ngModel" [(ngModel)]="topic.lang"
+      />
+      <small class="invalid-feedback d-block" *ngIf="!lang.valid && lang.touched">
+        El lenguaje de programación no es válido
+      </small>
+    </div>
+
+    <input class="btn btn-outline-primary" [disabled]="addTopic.invalid" type="submit" value="Crear tema">
+
+  </form>
+
+</div>

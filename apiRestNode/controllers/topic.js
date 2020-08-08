@@ -34,7 +34,7 @@ const save = (req, res) => {
 
         return res.status(200).send({
             status: "success",
-            topicStore
+            topic: topicStore
         });
     });
 }
