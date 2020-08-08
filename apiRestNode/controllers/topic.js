@@ -93,13 +93,6 @@ const getTopicsByUser = (req, res) => {
             });
         }
 
-        if (topics.length === 0) {
-            return res.status(404).send({
-                status: "error",
-                message: "No topics found"
-            });
-        }
-
         return res.status(200).send({
             status: "success",
             topics
@@ -197,13 +190,6 @@ const search = (req, res) => {
             return res.status(500).send({
                 status: "error",
                 message: "Error retrieving topics from DB"
-            });
-        }
-
-        if (topics.length === 0) {
-            return res.status(404).send({
-                status: "error",
-                message: "No topics found"
             });
         }
 

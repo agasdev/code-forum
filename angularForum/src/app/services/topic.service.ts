@@ -21,4 +21,21 @@ export class TopicService {
 
     return this._http.post(this.url + 'topic', params, {headers: headers});
   }
+
+  getTopicsByUser(userId): Observable<any> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    return this._http.get(this.url + 'topics-user/' + userId, {headers: headers});
+  }
+
+  getTopic(topicId): Observable<any> {
+    return this._http.get(this.url + 'topic/' + topicId);
+  }
+
+  update(token, id, topic: Topic): Observable<any> {
+    const params = JSON.stringify(topic);
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', token);
+
+    return this._http.put(this.url + 'topic/' + id, params, {headers: headers});
+  }
 }
