@@ -13,8 +13,8 @@ export class LoginComponent implements OnInit {
   public pageTitle: string;
   public user: User;
   public status: string;
-  public identity: string;
-  public  token: string;
+  public identity: User;
+  public token: string;
 
   constructor(private _userService: UserService, private _router: Router, private _route: ActivatedRoute) {
     this.pageTitle = "Identifícate";
@@ -24,31 +24,35 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(): void {
-    this.getLoginUser();
+  onSubmit(form): void {
+    this.getLoginUser(form);
   }
 
-  getLoginUser(): void {
+  getLoginUser(form): void {
     this._userService.login(this.user).subscribe(
       response => {
         if (response.user && response.user._id) {
           this.identity = response.user;
           localStorage.setItem('identity', JSON.stringify(this.identity));
-          this.getUserToken();
+          this.getUserToken(form);
         } else {
           this.status = 'error';
+          form.reset();
         }
       },
       error => {
         this.status = 'error';
+        form.reset();
         console.log(error);
       }
     );
   }
 
-  getUserToken(): void {
+  getUserToken(form): void {
+    console.log(this.user);
     this._userService.login(this.user, true).subscribe(
       response => {
+        console.log(response);
         if (response.token) {
           this.token = response.token;
           localStorage.setItem('token', this.token);
@@ -63,6 +67,7 @@ export class LoginComponent implements OnInit {
         console.log(error);
       }
     );
+    form.reset();
   }
 
 }

@@ -9,6 +9,8 @@ import { global } from "./global";
 })
 export class UserService {
   public url: string;
+  public identity: User;
+  public token: string;
 
   constructor(private _http: HttpClient) {
     this.url = global.URL;
@@ -31,6 +33,26 @@ export class UserService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     return this._http.post(this.url + 'login', params, {headers: headers});
+  }
+
+  logout(): void {
+    localStorage.clear();
+    this.identity = null;
+    this.token = null;
+  }
+
+  getIdentity(): User {
+    const identity = JSON.parse(localStorage.getItem('identity'));
+    identity ? this.identity = identity : this.identity = null;
+
+    return this.identity;
+  }
+
+  getToken(): string {
+    const token = localStorage.getItem('token');
+    token ? this.token = token : this.token = null;
+
+    return this.token;
   }
 
 }

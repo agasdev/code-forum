@@ -1,6 +1,10 @@
 <div class="col-lg-12 mt-3">
   <h1>{{ pageTitle }}</h1><hr />
 
+  <div class="alert alert-danger col-md-5 mx-auto" *ngIf="status === 'error'">
+    El login ha fallado
+  </div>
+
   <form class="col-lg-5 px-0 mx-auto" #loginForm='ngForm' (ngSubmit)="onSubmit(loginForm)" >
 
     <div class="form-group">
