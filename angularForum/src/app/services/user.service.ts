@@ -21,4 +21,16 @@ export class UserService {
     return this._http.post(this.url + 'register', params, {headers: headers});
   }
 
+  login(user: User, getToken: any = null): Observable<any> {
+    let object: any = user;
+    if (getToken !== null) {
+      object.getToken = getToken;
+    }
+
+    const params = JSON.stringify(user);
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    return this._http.post(this.url + 'login', params, {headers: headers});
+  }
+
 }

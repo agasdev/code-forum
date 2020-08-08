@@ -7,7 +7,7 @@ import { HomeComponent } from "./components/home/home.component";
 
 const appRoutes: Routes = [
   {path: "", component: HomeComponent},
-  {path: "hole", component: HomeComponent},
+  {path: "home", component: HomeComponent},
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},
   {path: "**", component: HomeComponent},
