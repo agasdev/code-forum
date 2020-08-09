@@ -14,8 +14,8 @@ import { ProfileComponent } from "./components/profile/profile.component";
 import { SearchComponent } from "./components/search/search.component";
 
 const appRoutes: Routes = [
-  {path: "", component: HomeComponent},
-  {path: "home",canActivate:[NoIdentityGuard], component: HomeComponent},
+  {path: "", canActivate:[NoIdentityGuard], component: HomeComponent},
+  {path: "home", canActivate:[NoIdentityGuard], component: HomeComponent},
   {path: "login", canActivate:[NoIdentityGuard], component: LoginComponent},
   {path: "register", canActivate:[NoIdentityGuard], component: RegisterComponent},
   {path: "settings", canActivate:[UserGuard], component: UserEditComponent},
@@ -25,7 +25,7 @@ const appRoutes: Routes = [
   {path: "users", component: UsersComponent},
   {path: "profile/:id", component: ProfileComponent},
   {path: "search/:search", component: SearchComponent},
-  {path: "**", component: HomeComponent},
+  {path: "**", component: TopicsComponent},
 ];
 
 export const appRoutingProviders: any[] = [];
