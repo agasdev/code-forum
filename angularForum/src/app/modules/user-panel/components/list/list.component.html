@@ -25,6 +25,7 @@
           <small><span class="badge badge-dark">{{ topic.date | amLocale: 'es' | amTimeAgo:true }}</span></small>
         </td>
         <td class="text-center">
+          <a [routerLink]="['/topic', topic._id]" class="btn btn-sm btn-outline-dark mr-2">Ver</a>
           <a [routerLink]="['/panel/edit', topic._id]" class="btn btn-sm btn-outline-warning mr-2">Editar</a>
           <a class="btn btn-sm btn-outline-danger" data-toggle="modal" [attr.data-target]="'#modal' + topic._id">Eliminar</a>
 

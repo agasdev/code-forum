@@ -63,13 +63,13 @@ const getTopics = (req, res) => {
                 message: "Error retrieving topics from DB"
             });
         }
-
+        /*
         if (topics.docs.length === 0) {
             return res.status(404).send({
                 status: "error",
                 message: "No topics found"
             });
-        }
+        }*/
 
         return res.status(200).send({
             status: "success",

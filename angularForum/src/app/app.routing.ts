@@ -5,6 +5,8 @@ import { LoginComponent } from "./components/login/login.component";
 import { RegisterComponent } from "./components/register/register.component";
 import { HomeComponent } from "./components/home/home.component";
 import { UserEditComponent } from "./components/user-edit/user-edit.component";
+import { TopicsComponent } from "./components/topics/topics.component";
+import {TopicDetailComponent} from "./components/topic-detail/topic-detail.component";
 
 const appRoutes: Routes = [
   {path: "", component: HomeComponent},
@@ -12,6 +14,9 @@ const appRoutes: Routes = [
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},
   {path: "settings", component: UserEditComponent},
+  {path: "topics", component: TopicsComponent},
+  {path: "topics/:page", component: TopicsComponent},
+  {path: "topic/:id", component: TopicDetailComponent},
   {path: "**", component: HomeComponent},
 ];
 

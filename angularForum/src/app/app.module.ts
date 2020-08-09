@@ -6,6 +6,7 @@ import { appRouting, appRoutingProviders } from "./app.routing";
 import { AngularFileUploaderModule } from "angular-file-uploader";
 import { UserPanelModule } from "./modules/user-panel/user-panel.module";
 import { MomentModule } from "angular2-moment";
+import { NgxHighlightJsModule } from "@nowzoo/ngx-highlight-js";
 
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -15,6 +16,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { TopicsComponent } from './components/topics/topics.component';
+import { TopicDetailComponent } from './components/topic-detail/topic-detail.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { TopicsComponent } from './components/topics/topics.component';
     LoginComponent,
     HomeComponent,
     UserEditComponent,
-    TopicsComponent
+    TopicsComponent,
+    TopicDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,8 @@ import { TopicsComponent } from './components/topics/topics.component';
     HttpClientModule,
     AngularFileUploaderModule,
     UserPanelModule,
-    MomentModule
+    MomentModule,
+    NgxHighlightJsModule.forRoot()
   ],
   providers: [
     appRoutingProviders
