@@ -15,6 +15,9 @@
       <li class="nav-item" *ngIf="identity">
         <a class="nav-link" [routerLink]="['/panel/create']">Crear tema</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/users']">Usuarios</a>
+      </li>
       <li class="nav-item">&nbsp;&nbsp;</li>
       <li class="nav-item">
         <form class="form-inline my-2 my-lg-0">
@@ -42,7 +45,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" [routerLink]="['/panel']">Panel de usuario</a>
-          <a class="dropdown-item" href="#">Mi perfil</a>
+          <a class="dropdown-item" [routerLink]="['/profile', identity._id]">Mi perfil</a>
           <a class="dropdown-item" [routerLink]="['/settings']">Ajustes</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item pointer" (click)="logout()">Cerrar sesión</a>

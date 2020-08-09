@@ -218,11 +218,12 @@ const uploadAvatar = (req, res) => {
         });
 
     } else {
+        console.log(req.user.sub);
         // Check user id
         const userId = req.user.sub;
 
         // Update user
-        User.findOneAndUpdate(userId, {image: file_name}, {new: true}, (err, userUpdate) => {
+        User.findOneAndUpdate({_id: userId}, {image: file_name}, {new: true}, (err, userUpdate) => {
             if (err || !userUpdate) {
                 return res.status(500).send({
                     status: "error",

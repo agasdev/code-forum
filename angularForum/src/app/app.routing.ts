@@ -9,6 +9,8 @@ import { TopicsComponent } from "./components/topics/topics.component";
 import { TopicDetailComponent } from "./components/topic-detail/topic-detail.component";
 import { UserGuard } from "./services/user.guard";
 import { NoIdentityGuard } from "./services/no-identity.guard";
+import { UsersComponent } from "./components/users/users.component";
+import { ProfileComponent } from "./components/profile/profile.component";
 
 const appRoutes: Routes = [
   {path: "", component: HomeComponent},
@@ -19,6 +21,8 @@ const appRoutes: Routes = [
   {path: "topics", component: TopicsComponent},
   {path: "topics/:page", component: TopicsComponent},
   {path: "topic/:id", component: TopicDetailComponent},
+  {path: "users", component: UsersComponent},
+  {path: "profile/:id", component: ProfileComponent},
   {path: "**", component: HomeComponent},
 ];
 

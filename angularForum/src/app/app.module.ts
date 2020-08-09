@@ -20,6 +20,9 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { TopicsComponent } from './components/topics/topics.component';
 import { TopicDetailComponent } from './components/topic-detail/topic-detail.component';
+import { UsersComponent } from './components/users/users.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { TopicDetailComponent } from './components/topic-detail/topic-detail.com
     HomeComponent,
     UserEditComponent,
     TopicsComponent,
-    TopicDetailComponent
+    TopicDetailComponent,
+    UsersComponent,
+    ProfileComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
