@@ -10,6 +10,9 @@ import { EditComponent } from './components/edit/edit.component';
 import { ListComponent } from './components/list/list.component';
 import { MainComponent } from './components/main/main.component';
 
+import { UserService } from "../../services/user.service";
+import { UserGuard } from "../../services/user.guard";
+
 @NgModule({
   declarations: [
     AddComponent,
@@ -30,7 +33,10 @@ import { MainComponent } from './components/main/main.component';
     ListComponent,
     MainComponent
   ],
-  providers: []
+  providers: [
+    UserService,
+    UserGuard
+  ]
 })
 
 export class UserPanelModule { }

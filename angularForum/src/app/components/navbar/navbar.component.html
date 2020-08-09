@@ -12,7 +12,7 @@
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/topics']" >Temas</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="identity">
         <a class="nav-link" [routerLink]="['/panel/create']">Crear tema</a>
       </li>
       <li class="nav-item">&nbsp;&nbsp;</li>
