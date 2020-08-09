@@ -11,6 +11,7 @@ import { UserGuard } from "./services/user.guard";
 import { NoIdentityGuard } from "./services/no-identity.guard";
 import { UsersComponent } from "./components/users/users.component";
 import { ProfileComponent } from "./components/profile/profile.component";
+import { SearchComponent } from "./components/search/search.component";
 
 const appRoutes: Routes = [
   {path: "", component: HomeComponent},
@@ -23,6 +24,7 @@ const appRoutes: Routes = [
   {path: "topic/:id", component: TopicDetailComponent},
   {path: "users", component: UsersComponent},
   {path: "profile/:id", component: ProfileComponent},
+  {path: "search/:search", component: SearchComponent},
   {path: "**", component: HomeComponent},
 ];
 

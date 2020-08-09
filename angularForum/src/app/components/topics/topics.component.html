@@ -15,7 +15,7 @@
 
   <div class="clearfix"></div>
 
-  <ul class="pagination mt-4 justify-content-center">
+  <ul class="pagination mt-4 justify-content-center" *ngIf="!noPaginate">
     <li class="page-item"><a class="page-link" [routerLink]="['/topics', prevPage]">&laquo;</a></li>
     <li class="page-item" *ngFor="let num of numberPages">
       <a class="page-link" [routerLink]="['/topics', num]" >{{ num }}</a>

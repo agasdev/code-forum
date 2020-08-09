@@ -12,6 +12,7 @@ import {global} from "../../services/global";
 export class NavbarComponent implements OnInit {
   @Input('identity') identity: User;
   public url: string;
+  public search: string;
 
   constructor(private _userServive: UserService, private _router: Router, private _activatedRoute: ActivatedRoute) {
     this.url = global.URL;
@@ -23,6 +24,10 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     this._userServive.logout();
     this._router.navigate(['/home']);
+  }
+
+  searchTopics(): void {
+    this._router.navigate(['/search', this.search]);
   }
 
 }

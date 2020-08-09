@@ -185,7 +185,7 @@ const search = (req, res) => {
             {"code": {"$regex": search, "$options": "i"}},
             {"lang": {"$regex": search, "$options": "i"}},
         ]
-    }).sort([["date", "descending"]]).exec((err, topics) => {
+    }).populate('user').sort([["date", "descending"]]).exec((err, topics) => {
         if (err) {
             return res.status(500).send({
                 status: "error",
