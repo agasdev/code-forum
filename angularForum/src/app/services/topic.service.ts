@@ -38,4 +38,10 @@ export class TopicService {
 
     return this._http.put(this.url + 'topic/' + id, params, {headers: headers});
   }
+
+  deleteTopic(token, id): Observable<any> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', token);
+
+    return this._http.delete(this.url + 'topic/' + id, {headers: headers});
+  }
 }

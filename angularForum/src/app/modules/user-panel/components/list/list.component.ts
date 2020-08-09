@@ -36,7 +36,6 @@ export class ListComponent implements OnInit {
         if (response.status === "success") {
           this.status = "success";
           this.topics = response.topics;
-          console.log(this.topics);
         } else {
           this.status = "error";
         }
@@ -48,4 +47,17 @@ export class ListComponent implements OnInit {
     );
   }
 
+  deleteTopic(topicId): void {
+    this._topicService.deleteTopic(this.token, topicId).subscribe(
+      response => {
+        if (response.status === "success") {
+          this.getTopicsByUser();
+        }
+      },
+      error => {
+        this.status = "error";
+        console.log(error);
+      }
+    );
+  }
 }
