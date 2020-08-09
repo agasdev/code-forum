@@ -49,7 +49,6 @@ export class AddComponent implements OnInit {
         console.log(error);
       }
     );
-    console.log(this.topic);
   }
 
 }

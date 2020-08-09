@@ -218,7 +218,6 @@ const uploadAvatar = (req, res) => {
         });
 
     } else {
-        console.log(req.user.sub);
         // Check user id
         const userId = req.user.sub;
 

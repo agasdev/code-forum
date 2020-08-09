@@ -49,10 +49,8 @@ export class LoginComponent implements OnInit {
   }
 
   getUserToken(form): void {
-    console.log(this.user);
     this._userService.login(this.user, true).subscribe(
       response => {
-        console.log(response);
         if (response.token) {
           this.token = response.token;
           localStorage.setItem('token', this.token);
