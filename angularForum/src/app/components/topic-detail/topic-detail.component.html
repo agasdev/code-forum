@@ -3,7 +3,7 @@
     <h2>{{ topic.title }}</h2>
     <span class="badge badge-primary">{{ topic.user.name + ' ' + topic.user.surname }}</span>
     <span class="badge badge-light ml-2">publicada {{ topic.date | amLocale: 'es' | amTimeAgo }}</span>
-    <span class="badge badge-warning ml-2" *ngIf="topic.lang">{{ topic.lang }}</span>
+    <span class="badge badge-warning ml-2" *ngIf="topic.lang">{{ topic.lang | lowercase }}</span>
     <hr />
 
     <p id="topic-content" class="mt-3">
@@ -13,5 +13,52 @@
     <p id="topic-code" class="mt-3" *ngIf="topic.code && topic.lang">
       <ngx-highlight-js lang="{{ topic.lang | lowercase }}" code="{{ topic.code }}"></ngx-highlight-js>
     </p>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div id="comment-box" class="col-lg-7 mx-auto my-5">
+    <h4>{{ topic.comments.length }} {{ topic.comments.length === 1 ? 'comentario' : 'comentarios' }}</h4><hr />
+
+    <ul class="list-group">
+      <li class="list-group-item comment-item" *ngFor="let comment of topic.comments">
+        <div class="float-left mr-3">
+          <img class="rounded-circle mr-2" width="45px" src="{{url + 'avatar/' + comment.user.image}}"  alt="{{comment.user.image}}"/>
+        </div>
+        <span class="badge badge-info" *ngIf="topic.lang">{{ comment.user.name + ' ' + comment.user.surname }}</span>
+        <span class="badge badge-light ml-2">respondida {{ comment.date | amLocale: 'es' | amTimeAgo }}</span>
+        <span class="d-block mt-2">{{ comment.content }}</span>
+        <button
+          (click)="deleteComment(comment._id)"
+          class="btn btn-sm btn-outline-danger float-right"
+          *ngIf="identity._id === comment.user._id"
+        >
+          Borrar
+        </button>
+      </li>
+    </ul>
+
+    <hr />
+
+    <div class="alert alert-success mx-auto" *ngIf="status === 'success'">
+      La respuesta se ha añadido correctamente
+    </div>
+    <div class="alert alert-danger mx-auto" *ngIf="status === 'error'">
+      Ha habido algún error al añadir la respuesta
+    </div>
+
+    <form #formComment="ngForm" (ngSubmit)="onSubmit(formComment)" *ngIf="identity">
+      <div class="form-group">
+        <label for="content">Tu respuesta</label>
+        <textarea class="form-control" id="content" name="content"
+                  required type="text" #content="ngModel" [(ngModel)]="comment.content"
+        ></textarea>
+        <small class="invalid-feedback d-block" *ngIf="!content.valid && content.touched">
+          La respuesta no es válida
+        </small>
+      </div>
+
+      <input type="submit" class="btn btn-outline-primary" value="Comentar" [disabled]="formComment.invalid" />
+    </form>
   </div>
 </div>

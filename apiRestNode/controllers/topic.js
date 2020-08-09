@@ -105,7 +105,7 @@ const getTopic = (req, res) => {
     const topicId = req.params.id;
 
     // Find topic
-    Topic.findById(topicId).populate('user').exec((err, topic) => {
+    Topic.findById(topicId).populate('user').populate('comments.user').exec((err, topic) => {
         if (err || !topic) {
             return res.status(404).send({
                 status: "error",

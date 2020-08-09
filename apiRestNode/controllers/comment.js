@@ -46,9 +46,18 @@ const add = (req, res) => {
                 });
             }
 
-            return res.status(200).send({
-                status: "success",
-                topic
+            Topic.findById(topic._id).populate('user').populate('comments.user').exec((err, topic) => {
+                if (err || !topic) {
+                    return res.status(404).send({
+                        status: "error",
+                        message: "No topic found"
+                    });
+                }
+
+                return res.status(200).send({
+                    status: "success",
+                    topic
+                })
             });
         })
     });
@@ -120,9 +129,18 @@ const deleteComment = (req, res) => {
                     });
                 }
 
-                return res.status(200).send({
-                    status: "success",
-                    topic
+                Topic.findById(topic._id).populate('user').populate('comments.user').exec((err, topic) => {
+                    if (err || !topic) {
+                        return res.status(404).send({
+                            status: "error",
+                            message: "No topic found"
+                        });
+                    }
+
+                    return res.status(200).send({
+                        status: "success",
+                        topic
+                    })
                 });
             });
         }
