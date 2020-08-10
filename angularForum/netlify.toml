@@ -2,3 +2,8 @@
   command = "ng build --prod"
   publish="dist/angularForum"
   base = "angularForum"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
